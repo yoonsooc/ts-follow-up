@@ -2,6 +2,8 @@
   "compilerOptions": {
     // Environment setup & latest features
     "lib": ["ESNext"],
+    // TS 7(tsgo)은 TS 5와 달리 node_modules/@types를 자동 포함하지 않으므로 명시
+    "types": ["bun"],
     "target": "ESNext",
     "module": "Preserve",
     "moduleDetection": "force",
@@ -25,5 +27,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
-  }
+  },
+  // answer-origin.ts는 퀴즈 원본 스캐폴드 백업 — 의도적으로 미완성이므로 검사 제외
+  "exclude": ["**/answer-origin.ts"]
 }
