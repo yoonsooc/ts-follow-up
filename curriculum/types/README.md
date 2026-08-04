@@ -31,9 +31,25 @@ session-NN-<slug>/
 ## 백로그 (추가 검토 주제)
 
 실무 안티패턴이나 신규 기능이 발견되면 여기에 적고, 세션으로 승격한다.
+현재 최상위 목표는 **Quartz v5 소스 분석 가능 레벨** — 백로그 우선순위도 이 기준으로 매긴다.
 
-- `satisfies` 연산자 — 표기(`: T`) / 단언(`as T`) / `satisfies T` 삼자 비교. "검사는 받되 추론된 좁은 타입은 유지"라는 제3의 선택지 (S2 스캐폴드에서 잠깐 등장했음)
-- 유틸리티 타입 실전 — `Partial` / `Pick` / `Omit` / `ReturnType` / `Awaited` 등. 파생으로 SSOT를 유지하는 도구 (Zod의 `.pick()/.omit()`과 대응)
-- 매핑 타입과 조건부 타입 (`infer` 포함) — 유틸리티 타입이 만들어지는 원리. 직접 만들 일은 드물지만 에러 메시지를 읽으려면 필요
-- 템플릿 리터럴 타입 — `` `GET ${string}` `` 같은 문자열 패턴 타입
-- Result 패턴 직접 설계 — throw 없는 에러 처리 아키텍처 (S4-S5 논의의 일반화)
+### 승격 대기 (우선순위순)
+
+| 우선 | 주제 | 내용 | 비고 |
+|---|---|---|---|
+| 1 | 유틸리티 타입 실전 | `Partial` / `Pick` / `Omit` / `ReturnType` / `Parameters` / `Awaited` — 파생으로 SSOT를 유지하는 도구 (Zod `.pick()/.omit()` 대응) | **Quartz 선행 필수** |
+| 2 | 조건부·매핑 타입과 `infer` 독해 | 유틸리티 타입이 만들어지는 원리. 목표는 제작이 아니라 **라이브러리 `.d.ts`와 에러 메시지 독해** | **Quartz 선행 필수**. [Type Challenges](https://github.com/type-challenges/type-challenges) easy 선별 병행 |
+| 3 | `satisfies` 연산자 | 표기(`: T`) / 단언(`as T`) / `satisfies` 삼자 비교 — "검사는 받되 추론된 좁은 타입 유지"라는 제3의 선택지 | S2 스캐폴드에서 잠깐 등장 |
+| 4 | 템플릿 리터럴 타입 | `` `GET ${string}` `` 같은 문자열 패턴 타입 | |
+| 5 | Result 패턴 직접 설계 | throw 없는 에러 처리 아키텍처 — S4(총함수)·S5(safeParse) 논의의 일반화 | |
+
+### 예정 카테고리: `curriculum/reading-quartz` — Quartz v5 소스 분석 (실전)
+
+착수 조건: 위 백로그 1·2 완료. 참고 교재: Total TypeScript "Type Transformations" 영역.
+
+| # | 세션(안) | 내용 |
+|---|---|---|
+| 01 | 프로젝트 지형 파악 | 빌드/설정/진입점, 의존성 지도, tsconfig 읽기 |
+| 02 | 플러그인 아키텍처의 타입 | Quartz 제네릭 플러그인 시스템 독해 (S4 판별 기준 실전 적용) |
+| 03 | unified/remark/rehype 생태계 | 라이브러리 제네릭·조건부 타입 실전 독해 |
+| 04 | v5 메이저 diff 분석 | 브레이킹 체인지 추적 — 타입 변경이 소비 코드에 전파되는 경로 |
