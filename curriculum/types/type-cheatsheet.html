@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS 타입 치트시트 — types 커리큘럼</title>
+<style>
+  :root {
+    --bg: #f7f8fa; --card: #ffffff; --ink: #1a202c; --sub: #57606a;
+    --code-bg: #f0f3f7; --border: #d8dee6; --accent: #3178c6;
+    --danger: #c53030; --ok: #276749; --warn: #975a16;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 2rem 1.25rem 4rem; background: var(--bg); color: var(--ink);
+    font-family: -apple-system, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", sans-serif;
+    line-height: 1.6;
+  }
+  header { max-width: 1180px; margin: 0 auto 1.75rem; }
+  header h1 { margin: 0 0 .25rem; font-size: 1.7rem; }
+  header p { margin: 0; color: var(--sub); font-size: .95rem; }
+  header a { color: var(--accent); }
+  .grid {
+    max-width: 1180px; margin: 0 auto; display: grid; gap: 1.1rem;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    border-top: 4px solid var(--accent); padding: 1.1rem 1.2rem 1rem;
+    display: flex; flex-direction: column;
+  }
+  .card h2 { margin: 0 0 .15rem; font-size: 1.08rem; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+  .card h2 code { font-size: 1rem; }
+  .badge {
+    font-size: .68rem; font-weight: 600; color: #fff; background: var(--accent);
+    border-radius: 999px; padding: .1rem .55rem; white-space: nowrap;
+  }
+  .tagline { color: var(--sub); font-size: .86rem; margin: 0 0 .6rem; }
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
+    padding: .7rem .8rem; overflow-x: auto; font-size: .8rem; line-height: 1.55; margin: .4rem 0;
+  }
+  code, pre { font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace; }
+  p > code, li > code, h2 > code { background: var(--code-bg); border-radius: 4px; padding: .05rem .3rem; font-size: .85em; }
+  .cmt { color: #6a737d; }
+  .bad { color: var(--danger); font-weight: 600; }
+  .good { color: var(--ok); font-weight: 600; }
+  ul { margin: .3rem 0 .5rem; padding-left: 1.15rem; }
+  li { margin: .18rem 0; font-size: .88rem; }
+  .card p { font-size: .88rem; margin: .3rem 0; }
+  .doc {
+    margin-top: auto; padding-top: .6rem; font-size: .8rem;
+  }
+  .doc a { color: var(--accent); text-decoration: none; }
+  .doc a:hover { text-decoration: underline; }
+  .rule {
+    background: #fff8f0; border: 1px solid #f0d9b5; border-radius: 8px;
+    padding: .5rem .7rem; font-size: .84rem; margin: .45rem 0;
+  }
+  .wide { grid-column: 1 / -1; }
+  table { border-collapse: collapse; width: 100%; font-size: .84rem; margin: .4rem 0; }
+  th, td { border: 1px solid var(--border); padding: .35rem .55rem; text-align: left; }
+  th { background: var(--code-bg); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>TS 타입 치트시트 <span style="font-size:.9rem;color:var(--sub);font-weight:400">— types 커리큘럼 요약판</span></h1>
+  <p>
+    Session 1–5에서 다룬 키워드를 한 장으로. 원본 테마:
+    <a href="https://www.typescriptlang.org/cheatsheets/" target="_blank">공식 Cheat Sheets</a> ·
+    상세: <a href="https://www.typescriptlang.org/docs/handbook/intro.html" target="_blank">공식 Handbook</a>
+  </p>
+</header>
+
+<div class="grid">
+
+  <div class="card wide">
+    <h2>대원칙: 두 세계는 분리되어 있다 <span class="badge">Session 1</span></h2>
+    <p class="tagline">TS의 타입은 컴파일 후 전부 삭제된다. 타입 세계의 문법은 런타임에 아무 일도 하지 않는다.</p>
+    <table>
+      <tr><th>세계</th><th>존재하는 것</th><th>지켜주는 것</th></tr>
+      <tr><td>타입 세계 (컴파일 타임)</td><td><code>type</code>, <code>interface</code>, <code>as</code>, 제네릭, brand</td><td>코드 내부의 일관성</td></tr>
+      <tr><td>값의 세계 (런타임)</td><td>객체, 함수, 클래스, <b>Zod 스키마</b></td><td>경계로 들어오는 실제 데이터</td></tr>
+    </table>
+    <p>경계(<code>fetch</code>, <code>JSON.parse</code>, <code>localStorage</code>, env, 사용자 입력)에서 들어오는 값은 전부 <code>unknown</code>이다. 검증 없이 타입을 입히는 모든 수단(<code>as T</code>, return-only 제네릭, 표기+<code>any</code>)은 같은 거짓말이다.</p>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/basic-types.html" target="_blank">Handbook — The Basics (Erased Types)</a></div>
+  </div>
+
+  <div class="card">
+    <h2><code>any</code> / <code>unknown</code> / <code>never</code> <span class="badge">S1·S2</span></h2>
+    <p class="tagline">"모름"의 세 가지 표현 — 위험도는 하늘과 땅 차이.</p>
+    <pre><span class="bad">any</span>     <span class="cmt">// 검사 OFF. 모든 연산 허용 + 전염됨</span>
+<span class="good">unknown</span> <span class="cmt">// 모든 연산 금지. narrowing 후에만 사용 가능</span>
+never   <span class="cmt">// 값이 존재할 수 없음. 분기 소진의 증거</span></pre>
+<pre><span class="cmt">// never로 exhaustiveness 강제 (Rust match 흉내)</span>
+default: {
+  const _x: never = status; <span class="cmt">// 새 케이스 추가 시 컴파일 에러</span>
+  throw new Error(`unhandled: ${_x}`);
+}</pre>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any" target="_blank">any</a> · <a href="https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown" target="_blank">unknown</a> · <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking" target="_blank">Exhaustiveness</a></div>
+  </div>
+
+  <div class="card">
+    <h2><code>as</code> — 단언과 방향 판정 <span class="badge">S1·S2</span></h2>
+    <p class="tagline">캐스팅이 아니라 "검사하지 마라"는 무담보 약속. 런타임 no-op.</p>
+    <table>
+      <tr><th>단언 전 → 후</th><th>방향</th><th>안전성</th></tr>
+      <tr><td>부분집합 → 상위집합</td><td>넓히기</td><td class="good">항상 안전</td></tr>
+      <tr><td>같은 집합</td><td>제자리</td><td>무의미</td></tr>
+      <tr><td>상위집합 → 부분집합</td><td>좁히기</td><td class="bad">위험</td></tr>
+    </table>
+    <ul>
+      <li><code>표기(: T)</code>는 검사 요청, <code>단언(as T)</code>은 검사 거부 — <code>{} as Config</code>는 컴파일되지만 <code>const c: Config = {}</code>는 에러</li>
+      <li><span class="bad"><code>as unknown as X</code></span> = Rust <code>transmute</code> — 무조건 반려</li>
+      <li>정당한 좁히기: brand 생성 함수처럼 <b>격리된 경계 한 곳</b>뿐</li>
+    </ul>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions" target="_blank">Type Assertions</a></div>
+  </div>
+
+  <div class="card">
+    <h2>리터럴 타입과 <code>as const</code> <span class="badge">Session 2</span></h2>
+    <p class="tagline">값 하나가 곧 타입(집합 원소 1개). as const는 넓히기(widening)를 끄는 스위치.</p>
+    <pre>const a = "PENDING";        <span class="cmt">// "PENDING" (좁게 유지)</span>
+let   b = "PENDING";        <span class="cmt">// string (넓혀짐)</span>
+const o = { s: "PENDING" }; <span class="cmt">// { s: string } — 값은 넓혀진다</span>
+const c = { s: "PENDING" } as const;
+<span class="cmt">// { readonly s: "PENDING" } — 유일하게 항상 안전한 as</span></pre>
+    <div class="rule">enum 대신: <code>as const</code> 객체 + 파생 유니언. enum은 런타임 코드를 생성하며(타입이 아니라 코드), TS 7 시대의 타입 스트리핑 도구와 마찰한다.</div>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types" target="_blank">Literal Types</a> · <a href="https://www.typescriptlang.org/docs/handbook/enums.html" target="_blank">Enums (비추천 이유 파악용)</a></div>
+  </div>
+
+  <div class="card">
+    <h2><code>typeof</code> · <code>keyof</code> · <code>T[K]</code> <span class="badge">Session 2</span></h2>
+    <p class="tagline">값 → 타입 파생의 3종 세트. "값을 선언하고 타입은 파생시킨다" (Go const 블록의 철학).</p>
+    <pre>const OrderStatus = { Pending: "PENDING", Paid: "PAID" } as const;
+
+typeof OrderStatus            <span class="cmt">// 값의 타입: { readonly Pending: "PENDING"; ... }</span>
+keyof typeof OrderStatus      <span class="cmt">// 키 유니언: "Pending" | "Paid"</span>
+(typeof OrderStatus)[keyof typeof OrderStatus]
+                              <span class="cmt">// 값 유니언: "PENDING" | "PAID"</span></pre>
+    <p>주의: 타입 문맥의 <code>typeof</code>(값→타입)와 런타임 연산자 <code>typeof</code>(값→문자열)는 다른 것. <code>keyof</code>는 <code>as const</code> 없이도 정확하다 — 넓혀지는 건 언제나 값.</p>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/typeof-types.html" target="_blank">Typeof Types</a> · <a href="https://www.typescriptlang.org/docs/handbook/2/keyof-types.html" target="_blank">Keyof Types</a> · <a href="https://www.typescriptlang.org/docs/handbook/2/indexed-access-types.html" target="_blank">Indexed Access</a></div>
+  </div>
+
+  <div class="card">
+    <h2>Narrowing — <code>typeof</code> / <code>in</code> / 리터럴 비교 <span class="badge">S1·S3</span></h2>
+    <p class="tagline">unknown을 쓸 수 있는 타입으로 좁히는 런타임 검사. 검사한 표현식 자체에만 적용된다.</p>
+    <pre>if (typeof v === "string") { v.toUpperCase(); }   <span class="cmt">// 원시 타입</span>
+if (v !== null && typeof v === "object") { ... }  <span class="cmt">// null은 "object"! 별도 검사</span>
+if ("theme" in v) { v.theme }                     <span class="cmt">// 키 존재 → 프로퍼티 접근 가능</span>
+if (s === "dark" || s === "light") { ... }        <span class="cmt">// 리터럴 유니언까지 좁힘</span></pre>
+    <div class="rule">함정: <code>arr.length === 0</code> 검사는 <code>arr[0]</code>을 좁히지 못한다. 컴파일러는 .length와 요소 존재의 상관관계를 모델링하지 않는다 — 값 자체를 검사하거나 <code>for...of</code>로 우회.</div>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html" target="_blank">Narrowing</a></div>
+  </div>
+
+  <div class="card">
+    <h2>Type Predicate — <code>value is T</code> <span class="badge">S1·S4</span></h2>
+    <p class="tagline">반환 타입 자리의 타입 술어. 컴파일러는 본문을 검증하지 않고 서명을 그냥 믿는다 — 신뢰 지점.</p>
+    <pre>function isConfig(v: unknown): v is Config {
+  if (v === null || typeof v !== "object") return false;
+  <span class="cmt">// 약한 단언: 값은 unknown 유지 → 검증 없는 사용은 컴파일 에러</span>
+  const { port } = v as { port?: unknown };
+  return typeof port === "number";
+}</pre>
+    <ul>
+      <li>가드 안에서 <span class="bad"><code>as Config</code></span>(강한 단언) 금지 — "검증 없는 사용"이 침묵으로 통과하게 됨</li>
+      <li>가드는 <b>throw하지 않는 총함수</b> — 거부(false)와 자폭(throw)은 다른 실패 모드</li>
+      <li>잔여 위험: 타입-검증 드리프트 → Zod로 해결</li>
+    </ul>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates" target="_blank">Type Predicates</a></div>
+  </div>
+
+  <div class="card">
+    <h2><code>interface</code> vs <code>type</code> <span class="badge">Session 3</span></h2>
+    <p class="tagline">체감되는 차이는 둘: 유니언/파생은 type만, 선언 병합은 interface만.</p>
+    <pre>interface AnalyticsEvent { name: string }
+interface AnalyticsEvent { ts?: number }
+<span class="cmt">// 에러가 아니라 병합됨: { name: string; ts?: number }</span></pre>
+    <table>
+      <tr><th>상황</th><th>선택</th></tr>
+      <tr><td>유니언 · 파생 · 조건부 타입</td><td><code>type</code> (interface 불가)</td></tr>
+      <tr><td>외부 공개, 소비자가 확장할 계약</td><td><code>interface</code> (병합 = 기능)</td></tr>
+      <tr><td>내부 도메인 모델</td><td><code>type</code> (의도치 않은 병합 원천 차단)</td></tr>
+    </table>
+    <p>병합의 정당한 용도는 <b>내가 소유하지 않은 타입 확장</b>(Express Request, Window 등)뿐. optional 필드가 병합되면 에러 없이 계약이 조용히 바뀐다.</p>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#differences-between-type-aliases-and-interfaces" target="_blank">type vs interface</a> · <a href="https://www.typescriptlang.org/docs/handbook/declaration-merging.html" target="_blank">Declaration Merging</a></div>
+  </div>
+
+  <div class="card">
+    <h2>구조적 타이핑과 Branded Type <span class="badge">Session 3</span></h2>
+    <p class="tagline">TS는 이름이 아니라 모양을 본다 (Go 인터페이스 철학). 의미 구분이 필요하면 brand로 명목성을 흉내낸다.</p>
+    <pre>type UserId  = string & { readonly __brand: unique symbol };
+type OrderId = string & { readonly __brand: unique symbol };
+<span class="cmt">// unique symbol은 선언마다 재현 불가능한 새 타입 → 서로 비호환</span>
+
+function asUserId(raw: string): UserId {
+  return raw as UserId; <span class="cmt">// 격리된 의도적 단언 (Rust newtype 생성자 격)</span>
+}</pre>
+    <ul>
+      <li><code>type Id = string</code> 별명은 안전장치가 아니다 — 그냥 string</li>
+      <li>brand는 런타임에 존재하지 않음 (zero-cost, <code>repr(transparent)</code> 격)</li>
+      <li>잉여 속성 검사는 <b>리터럴을 그 자리에서</b> 넘길 때만 작동, 변수 경유는 통과</li>
+    </ul>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/type-compatibility.html" target="_blank">Type Compatibility</a> · <a href="https://www.typescriptlang.org/docs/handbook/symbols.html#unique-symbol" target="_blank">unique symbol</a> · <a href="https://www.typescriptlang.org/docs/handbook/2/objects.html#excess-property-checks" target="_blank">Excess Property Checks</a></div>
+  </div>
+
+  <div class="card">
+    <h2>제네릭 — <code>extends</code> 제약과 절제 <span class="badge">Session 4</span></h2>
+    <p class="tagline">존재 이유는 "두 위치의 타입 연결". 타입 파라미터는 시그니처에 두 번 이상 등장해야 한다.</p>
+    <pre><span class="good">// 정당: T와 K가 전부 2곳 이상에서 일한다</span>
+function pluck&lt;T, K extends keyof T&gt;(obj: T, key: K): T[K]
+
+<span class="bad">// 장식: 1회 등장 → (v: unknown)과 동일</span>
+function log&lt;T&gt;(v: T): void
+
+<span class="bad">// 흉기: return-only = as의 함수 포장</span>
+function parseJson&lt;T&gt;(text: string): T</pre>
+    <p>사다리: 연산 불필요 → <code>unknown</code> / C의 연산 필요 → <code>(v: C)</code> / 구체 타입이 흘러감 → <code>&lt;T extends C&gt;</code>. TS 제네릭은 지워진다(단형화 없음): <code>new T()</code>, <code>instanceof T</code> 불가.</p>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/generics.html" target="_blank">Generics</a> · <a href="https://www.typescriptlang.org/docs/handbook/2/generics.html#generic-constraints" target="_blank">Constraints</a></div>
+  </div>
+
+  <div class="card">
+    <h2><code>Record</code>와 유틸리티 타입 <span class="badge">Session 4</span></h2>
+    <p class="tagline">Record&lt;K, V&gt; = 키 K, 값 V인 객체. 키에 리터럴 유니언을 주면 데이터 차원의 exhaustiveness.</p>
+    <pre>Record&lt;string, number&gt;       <span class="cmt">// Go map[string]int 격</span>
+Record&lt;OrderStatus, string&gt;  <span class="cmt">// 모든 상태 키 강제 — 누락 시 에러</span>
+
+Partial&lt;T&gt;  Required&lt;T&gt;  Readonly&lt;T&gt;
+Pick&lt;T, K&gt;  Omit&lt;T, K&gt;   ReturnType&lt;F&gt;</pre>
+    <p>제약/사전 타입에는 <code>Record&lt;string, any&gt;</code> 대신 <span class="good"><code>Record&lt;string, unknown&gt;</code></span> — 꺼낸 값마다 narrowing을 강제한다.</p>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/utility-types.html" target="_blank">Utility Types</a></div>
+  </div>
+
+  <div class="card">
+    <h2>Discriminated Union <span class="badge">S2·S5</span></h2>
+    <p class="tagline">태그 필드로 구별되는 유니언 — Rust enum(sum type)의 진짜 TS 대응물.</p>
+    <pre>type ConfigResult =
+  | { ok: true;  config: AppConfig }
+  | { ok: false; reason: string };
+
+if (r.ok) { r.config } else { r.reason }
+<span class="cmt">// 태그 검사로 variant가 좁혀짐 — 성공값과 실패값을 동시에 쥘 수 없다</span></pre>
+    <p><code>switch</code> + <code>never</code> default와 조합하면 variant 추가 시 컴파일 에러로 처리 누락을 잡는다.</p>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions" target="_blank">Discriminated Unions</a></div>
+  </div>
+
+  <div class="card">
+    <h2>Zod — 값의 세계의 방어선 <span class="badge">Session 5</span></h2>
+    <p class="tagline">검증기에서 타입을 파생 → 타입-검증 드리프트가 구조적으로 불가능.</p>
+    <pre>const S = z.object({
+  theme: z.enum(["dark", "light"]),
+  fontSize: z.number().int().min(8).max(32),
+});
+type Config = z.infer&lt;typeof S&gt;;  <span class="cmt">// 단일 진실 공급원</span>
+
+const r = S.safeParse(data);       <span class="cmt">// 절대 throw 안 함 (Result 격)</span>
+if (r.success) r.data; else r.error;</pre>
+    <ul>
+      <li>경계에서 한 번 검증, 내부는 타입 신뢰 — 관세청이지 내부 검문소가 아니다</li>
+      <li><code>parse</code>(throw)는 실패=버그인 지점(기동 시 env 등)에만</li>
+    </ul>
+    <div class="doc">📖 <a href="https://zod.dev" target="_blank">zod.dev</a></div>
+  </div>
+
+  <div class="card wide">
+    <h2>도구 규율 <span class="badge">S1·S4</span></h2>
+    <ul>
+      <li><b>실행기는 타입을 검사하지 않는다</b> — bun/esbuild/swc는 타입을 벗겨낼 뿐. 검사는 <code>bunx tsc --noEmit</code>으로 별도 강제 (CI 필수). 파일 인자를 주면 tsconfig가 무시된다(TS 7부터는 TS5112 에러로 알려줌).</li>
+      <li><b>에디터의 빨간 줄도 하나의 검사기일 뿐</b> — VSCode 내장 tsserver(TS 5.x)와 프로젝트 TS 버전이 다를 수 있다. TS 7(tsgo)은 TypeScript Native Preview 확장으로 정렬.</li>
+      <li><code>@ts-expect-error</code> — "다음 줄은 에러여야 한다". 에러가 안 나면 그 자체가 에러(TS2578) → 컴파일 타임 동작을 테스트하는 도구.</li>
+      <li>TS 7은 <code>node_modules/@types</code>를 자동 포함하지 않는다 → tsconfig에 <code>"types": ["bun"]</code> 명시.</li>
+    </ul>
+    <div class="doc">📖 <a href="https://www.typescriptlang.org/tsconfig/" target="_blank">tsconfig Reference</a></div>
+  </div>
+
+</div>
+</body>
+</html>
