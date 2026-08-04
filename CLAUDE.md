@@ -8,7 +8,13 @@
 # Curriculum
 커리큘럼은 카테고리별 디렉토리로 관리하며, 세션 목록/순서/진행 상태의 단일 진실 공급원은 각 카테고리의 README입니다.
 
-- `curriculum/types/README.md` — 타입 카테고리 (현재 5개 세션)
+- `curriculum/types/README.md` — 타입 (5개 세션 완료, 백로그 진행 중)
+- `curriculum/reading-quartz/README.md` — Quartz v5 소스 분석 실전 (types 백로그 1·2 완료 후 착수)
+- `curriculum/async/README.md` — 비동기 모델과 동시성 (미착수)
+- `curriculum/error-handling/README.md` — 에러 처리 아키텍처 (미착수)
+- `curriculum/modules-tooling/README.md` — 모듈 시스템과 도구 지형 (미착수)
+- `curriculum/testing/README.md` — 테스트 (미착수)
+- `curriculum/api-boundary/README.md` — 경계의 시스템화 (미착수)
 
 새 안티패턴이나 신규 기능 등 학습 주제가 생기면 해당 README의 백로그에 추가한 뒤 세션으로 승격하거나, 새 카테고리 디렉토리(`curriculum/<category>/`)를 만듭니다.
 
