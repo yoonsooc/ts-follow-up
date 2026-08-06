@@ -12,6 +12,7 @@ TS의 타입 시스템은 컴파일 타임에만 존재한다. 이 카테고리�
 | 03 | [structural-typing](./session-03-structural-typing/) | 구조적 타이핑의 이해 (`interface` 선언 병합 vs `type`) | ✅ 완료 |
 | 04 | [generics-in-practice](./session-04-generics-in-practice/) | 제네릭의 실용적 통제 (오버엔지니어링 방지) | ✅ 완료 |
 | 05 | [runtime-validation](./session-05-runtime-validation/) | 런타임 방어선 구축 (Zod 스키마 검증과 실패 처리) | ✅ 완료 |
+| 06 | [utility-types](./session-06-utility-types/) | 유틸리티 타입 실전 (파생으로 SSOT 유지) | ✅ 완료 |
 
 상태: ⚪ 대기 / 🔵 진행 중 / ✅ 완료 (퀴즈 리뷰까지 통과해야 완료)
 
@@ -37,7 +38,7 @@ session-NN-<slug>/
 
 | 우선 | 주제 | 내용 | 비고 |
 |---|---|---|---|
-| 1 | 유틸리티 타입 실전 | `Partial` / `Pick` / `Omit` / `ReturnType` / `Parameters` / `Awaited` — 파생으로 SSOT를 유지하는 도구 (Zod `.pick()/.omit()` 대응) | **Quartz 선행 필수** |
+| ~~1~~ | ~~유틸리티 타입 실전~~ | → **Session 06으로 승격** | |
 | 2 | 조건부·매핑 타입과 `infer` 독해 | 유틸리티 타입이 만들어지는 원리. 목표는 제작이 아니라 **라이브러리 `.d.ts`와 에러 메시지 독해** | **Quartz 선행 필수**. [Type Challenges](https://github.com/type-challenges/type-challenges) easy 선별 병행 |
 | 3 | `satisfies` 연산자 | 표기(`: T`) / 단언(`as T`) / `satisfies` 삼자 비교 — "검사는 받되 추론된 좁은 타입 유지"라는 제3의 선택지 | S2 스캐폴드에서 잠깐 등장 |
 | 4 | 템플릿 리터럴 타입 | `` `GET ${string}` `` 같은 문자열 패턴 타입 | |
