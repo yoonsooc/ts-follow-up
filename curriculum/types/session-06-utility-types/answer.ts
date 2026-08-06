@@ -86,7 +86,11 @@ export async function cachedFetchUser(...args: FetchArgs): Promise<FetchResult> 
   const fetchResult = await fetchUserFromApi(...args)
   // 여기서는 id값 캐시 키로 사용, 즉 opts.timeout 이 달라도 같은 캐시를 반환한다.
   // timeout 값까지 포함시키려면 키에 인자 전체를 직렬화시킬 수 있음
+
   // Q) 키 타입으로 FetchArgs를 사용할 수는 없는지?
+  // Map의 키 비교는 SameValueZero(참조동등성) 방식으로, 배열 값이 같아도 서로 다른 객체면 다른 키이다.
+  // 현재 함수(cachedFetchUser)는 호출될 때마다 새 args 배열을 받으므로, 구조적으로 캐시 조회가 성립할 수 없음
+  // FetchArgs 라는 타입으로 키의 모양에만 제약을 걸고 값 기반 동등성을 가진 string으로 직렬화하여 키 비교를 수행하는 것.
   cache.set(id, fetchResult)
   return fetchResult
 }
