@@ -15,7 +15,7 @@
 
 | # | 세션 | 주제 | 상태 |
 |---|---|---|---|
-| 01 | [project-topology](./session-01-project-topology/) | 프로젝트 지형 파악 — 빌드/설정/진입점, 의존성 지도, tsconfig 읽기 | 🔵 진행 중 |
+| 01 | [project-topology](./session-01-project-topology/) | 프로젝트 지형 파악 — 빌드/설정/진입점, 의존성 지도, tsconfig 읽기 | ✅ 완료 |
 | 02 | plugin-architecture | Quartz 제네릭 플러그인 시스템 독해 (types S4 판별 기준 실전 적용) | ⚪ 대기 |
 | 03 | unified-ecosystem | unified/remark/rehype 생태계 — 라이브러리 제네릭·조건부 타입 실전 독해 | ⚪ 대기 |
 | 04 | v5-major-diff | v5 브레이킹 체인지 추적 — 타입 변경이 소비 코드에 전파되는 경로 분석 | ⚪ 대기 |
