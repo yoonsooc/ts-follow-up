@@ -47,10 +47,10 @@ export function loadConfig(raw: string | null): AppConfig {
 
 // TODO: z.discriminatedUnion("status", [...])
 export const ApiResponseSchema = z.discriminatedUnion(
-  "status", 
+  "status",
   [
-    z.object({status: z.literal("ok"), data: AppConfigSchema}),
-    z.object({status: z.literal("error"), message: z.string()}),
+    z.object({ status: z.literal("ok"), data: AppConfigSchema }),
+    z.object({ status: z.literal("error"), message: z.string() }),
   ]
 );
 export type ApiResponse = z.infer<typeof ApiResponseSchema>;
@@ -75,8 +75,8 @@ export function handleResponse(payload: unknown): ConfigResult {
     return { ok: false, reason: error.message }
   }
 }
- 
- // TODO: 서술형 답변
+
+// TODO: 서술형 답변
 // Q1. 예외를 터뜨리지 않고 에러를 반환 타입에 포함하여 수동 검증을 수행할 수 있는 점이 동일하지만,
 //  safeParse 실행 결과로 반환된 객체의 success 필드 조회를 통해 성공 여부를 판단해야 한다.
 // Rust는 match 연산자가 variant 소진을 강제 + '?'연산자로 전파를 지원
